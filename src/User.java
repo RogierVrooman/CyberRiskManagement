@@ -10,11 +10,15 @@ public class User {
 	//of the likelihood if the user would click on a wrong link
 	private int capability;
 	
+	//scale 1-100: how aware is the user of cyber attacks etc
+	private int aware;
+	
 	//constructor
-	public User(boolean evil, int frequency, int capability) {
+	public User(boolean evil, int frequency, int capability, int aware) {
 		this.evil = evil;
 		this.frequency = frequency;
 		this.capability = capability;
+		this.aware = aware;
 	}
 	
 	//returns if the user is evil
@@ -30,6 +34,11 @@ public class User {
 	//returns the capability of the user
 	public int getCapability() {
 		return capability;
+	}
+	
+	//returns the awereness of the user
+	public int getAwereness() {
+		return aware;
 	}
 	
 }
