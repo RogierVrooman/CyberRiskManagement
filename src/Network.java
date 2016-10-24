@@ -65,6 +65,15 @@ public class Network {
 		}
 	}
 	
+	public int getInfectedCount() {
+		int sum = 0;
+		for(User user: users) {
+			if(user.isInfected())
+				sum++;
+		}
+		return sum;
+	}
+	
 	public StringBuilder toJSON(StringBuilder sb) {
 		sb.append("{\"Network\": {")
 		.append("\"userCount\": ").append(userCount)

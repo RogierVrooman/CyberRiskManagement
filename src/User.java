@@ -1,4 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class User {
 	
@@ -7,6 +10,7 @@ public class User {
 	private int id;
 	
 	private static final double QUALITY_DEVIATION = 15d; 
+	private static final float INFECT_CHANCE = 0.05f; //0.01f == 1%
 	
 	//whether the user publishes tweets containing phishing links or not
 	private boolean evil;
@@ -19,11 +23,17 @@ public class User {
 	//Reduces likelyhood of getting infected by evil tweet
 	private int education;
 	
+	//whether the user has been infected by the malware
+	private boolean infected;
+	
 	//users who will receive tweets send by this user
 	private ArrayList<User> followers;
 	
 	//tweets received by the suer
-	private ArrayList<Tweet> receivedTweets;
+	private Set<Tweet> receivedTweets;
+	
+	//tweets which already have been red
+	private Set<Tweet> readTweets;
 	
 	//constructor
 	public User(boolean evil, int tweetFrequency, int education) {
@@ -34,7 +44,10 @@ public class User {
 		this.tweetFrequency = tweetFrequency;
 		this.education = education;
 		followers = new ArrayList<User>();
-		receivedTweets = new ArrayList<Tweet>();
+		receivedTweets = new HashSet<Tweet>();
+		readTweets = new HashSet<Tweet>();
+		
+		infected = false;
 	}
 	
 	public void addFollower(User follower) {
@@ -42,18 +55,37 @@ public class User {
 	}
 	
 	public void addTweet(Tweet tweet) {
-		receivedTweets.add(tweet);
+		if(receivedTweets.contains(tweet) == false && readTweets.contains(tweet) == false)
+			receivedTweets.add(tweet);
 	}
 	
 	//Read tweets and possible retweet the message
 	public void doReadTweets() {
-		for(Tweet tweet: receivedTweets) {
+		for(Iterator<Tweet> iterator = receivedTweets.iterator(); iterator.hasNext();) {
+			Tweet tweet = iterator.next();
 			if(tweet.isPhishingTweet()) {
+				//Do we get infected?
 				int defendDice = main.random.nextInt(100) + 1;
-				if(defendDice <= tweet.getQuality()) {
-					//TODO: GET INFECTED AND RETWEET
+				int attackDice = main.random.nextInt(100) + 1;
+				if(defendDice * education <= attackDice * tweet.getQuality()
+						&& main.random.nextFloat() <= INFECT_CHANCE) {
+					infected = true;
+					//Retweet
+					//TODO: Maybe this should happen with a certain probability
+					for(User follower: followers) {
+						follower.addTweet(tweet);
+					}
 				}
+				
+			} else if(evil == false) {
+				//Do we get more educated?
+				int learnScore = (int) (main.random.nextInt(5) * ((float) tweet.getQuality() / 100f));
+				education += learnScore;
+				if(education > 100)
+					education = 100;
 			}
+			readTweets.add(tweet);
+			iterator.remove();
 		}
 	}
 	
@@ -75,6 +107,11 @@ public class User {
 	//returns if the user is evil
 	public boolean isEvil() {
 		return evil;
+	}
+	
+	//returns true if the user has been infected
+	public boolean isInfected() {
+		return infected;
 	}
 	
 	//returns the tweeting frequency of the user
