@@ -5,10 +5,10 @@ public class main {
 	
 	static Random random = new Random();
 	
-	static int steps = 1000;
+	static int steps = 500;
 	
 	public static void main(String[] args) {
-		int userCount = 5000;
+		int userCount = 250;
 		float maliciousUserCount = 0.05f; // percentage of evil users
 		double averageFollowerCount = 60d;
 		double standardDeviation = 30d;

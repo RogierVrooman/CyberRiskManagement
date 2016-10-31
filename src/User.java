@@ -10,7 +10,7 @@ public class User {
 	private int id;
 	
 	private static final double QUALITY_DEVIATION = 15d; 
-	private static final float INFECT_CHANCE = 0.05f; //0.01f == 1%
+	private static final float INFECT_CHANCE = 0.01f; //0.01f == 1%
 	
 	//whether the user publishes tweets containing phishing links or not
 	private boolean evil;
@@ -70,6 +70,7 @@ public class User {
 				if(defendDice * education <= attackDice * tweet.getQuality()
 						&& main.random.nextFloat() <= INFECT_CHANCE) {
 					infected = true;
+					
 					//Retweet
 					//TODO: Maybe this should happen with a certain probability
 					for(User follower: followers) {
@@ -97,7 +98,22 @@ public class User {
 				quality = 100;
 			if(quality < 1)
 				quality = 1;
-			Tweet tweet = new Tweet(evil, quality);
+			
+			Tweet tweet;
+			
+			if(evil) {
+				tweet = new Tweet(true, quality);
+			} else if (infected) {
+				float r = main.random.nextFloat();
+				if(r <= 0.95) {
+					tweet = new Tweet(false, quality);
+				} else {
+					tweet = new Tweet(true, quality);
+				}
+			} else {
+				tweet = new Tweet(false, quality);
+			}
+			
 			for(User follower: followers) {
 				follower.addTweet(tweet);
 			}
