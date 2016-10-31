@@ -11,17 +11,17 @@ public class User {
 	
 	private static final double QUALITY_DEVIATION = 15d; 
 	private static final float INFECT_CHANCE = 0.01f; //0.01f == 1%
+	private static final double EDUCATION_IMPROVEMENT = .02f;
 	
 	//whether the user publishes tweets containing phishing links or not
 	private boolean evil;
 	
 	//scale 1-100: sending tweets 'frequency'
 	private int tweetFrequency;
-
 	
 	//scale 1-100: how educated is the user of cyber attacks etc. Increases quality of evil tweets
 	//Reduces likelyhood of getting infected by evil tweet
-	private int education;
+	private double education;
 	
 	//whether the user has been infected by the malware
 	private boolean infected;
@@ -80,10 +80,11 @@ public class User {
 				
 			} else if(evil == false) {
 				//Do we get more educated?
-				int learnScore = (int) (main.random.nextInt(5) * ((float) tweet.getQuality() / 100f));
-				education += learnScore;
-				if(education > 100)
-					education = 100;
+//				double learnScore = (main.random.nextDouble() * EDUCATION_IMPROVEMENT * ((double) tweet.getQuality() / 100d));
+//				education += learnScore;
+				
+//				if(education > 100)
+//					education = 100;
 			}
 			readTweets.add(tweet);
 			iterator.remove();
@@ -120,6 +121,11 @@ public class User {
 		}
 	}
 	
+	public void doCampaign(double effectiveness) {
+		double value = main.random.nextDouble() * effectiveness;
+		education += value;
+	}
+	
 	//returns if the user is evil
 	public boolean isEvil() {
 		return evil;
@@ -136,7 +142,7 @@ public class User {
 	}
 	
 	//returns the education of the user
-	public int getEducation() {
+	public double getEducation() {
 		return education;
 	}
 	

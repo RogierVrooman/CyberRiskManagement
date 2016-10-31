@@ -69,6 +69,12 @@ public class Network {
 		}
 	}
 	
+	public void doCampaign(double effectiveness) {
+		for(User user: users) {
+			user.doCampaign(effectiveness);
+		}
+	}
+	
 	public int getInfectedCount() {
 		int sum = 0;
 		for(User user: users) {
