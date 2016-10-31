@@ -13,9 +13,9 @@ public class Network {
 	//Creates a network with userCount users
 	//The first evilCount users will be evil.
 	//averageFollowerCount: average amount of followers each user has. This is a probability, not a definite amount
-	public Network(int userCount, int evilCount, double averageFollowerCount, double standardDeviation) {
+	public Network(int userCount, float evilCount, double averageFollowerCount, double standardDeviation) {
 		this.userCount = userCount;
-		this.evilCount = evilCount;
+		this.evilCount = (int) Math.round(((float) this.userCount * evilCount));
 		this.averageFollowerCount = averageFollowerCount;
 		this.standardDeviation = standardDeviation;
 		
@@ -24,11 +24,15 @@ public class Network {
 		users = new ArrayList<User>();
 		for(int i = 0; i < userCount; i++) {
 			boolean evil;
-			if(i < evilCount)
+			int tweetFrequency;
+			if(i < evilCount) {
 				evil = true;
-			else
+				tweetFrequency = 100;
+			}
+			else {
 				evil = false;
-			int tweetFrequency = r.nextInt(100) + 1;
+				tweetFrequency = r.nextInt(100) + 1;
+			}			
 			int education = r.nextInt(100) + 1;
 			User user = new User(evil, tweetFrequency, education);
 			users.add(user);

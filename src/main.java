@@ -5,11 +5,11 @@ public class main {
 	
 	static Random random = new Random();
 	
-	static int steps = 100;
+	static int steps = 1000;
 	
 	public static void main(String[] args) {
 		int userCount = 5000;
-		int maliciousUserCount = 5;
+		float maliciousUserCount = 0.05f; // percentage of evil users
 		double averageFollowerCount = 60d;
 		double standardDeviation = 30d;
 		Network network = new Network(userCount, maliciousUserCount, averageFollowerCount, standardDeviation);
@@ -19,8 +19,8 @@ public class main {
 		System.out.println(sb.toString());
 		
 		doTest(network); 
-		
-		System.out.println(sb.toString());
+		System.out.println();
+
 		
 		int infectedCount = network.getInfectedCount();
 		
@@ -30,8 +30,9 @@ public class main {
 
 	public static void doTest(Network network) {
 		for(int step = 0; step < steps; step++) {
-			System.out.println("Step " + step);
+			//System.out.println("Step " + step);
 			network.doStep();
+			System.out.print( ((float)network.getInfectedCount() / (float)network.userCount) + ",");
 		}
 	}
 	
