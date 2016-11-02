@@ -6,8 +6,9 @@ public class main {
 	static Random random = new Random();
 	
 	static int steps = 500;
-	static int campaign_start_step = 50;
-	static double campaign_effectiveness = 1000;
+	static int campaign_start_step = 150;
+	static double campaign_effectiveness = 200;
+	static double campaign_deviation = 50;
 	
 	@SuppressWarnings("all")
 	public static void main(String[] args) {
@@ -39,7 +40,7 @@ public class main {
 		for(int step = 0; step < steps; step++) {
 			//System.out.println("Step " + step);
 			if(step == campaign_start_step) {
-				network.doCampaign(campaign_effectiveness);
+				network.doCampaign(campaign_effectiveness, campaign_deviation);
 			}
 			network.doStep();
 			System.out.print( ((float)network.getInfectedCount() / (float)network.userCount) + ",");

@@ -69,9 +69,9 @@ public class Network {
 		}
 	}
 	
-	public void doCampaign(double effectiveness) {
+	public void doCampaign(double effectiveness, double deviation) {
 		for(User user: users) {
-			user.doCampaign(effectiveness);
+			user.doCampaign(effectiveness, deviation);
 		}
 	}
 	

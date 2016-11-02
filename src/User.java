@@ -121,8 +121,8 @@ public class User {
 		}
 	}
 	
-	public void doCampaign(double effectiveness) {
-		double value = main.random.nextDouble() * effectiveness;
+	public void doCampaign(double effectiveness, double deviation) {
+		double value = main.getNormallyDistributed(effectiveness, deviation);
 		education += value;
 	}
 	
